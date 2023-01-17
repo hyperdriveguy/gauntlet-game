@@ -7,9 +7,12 @@ CC = g++
 CFLAGS  = -g -Wall
 
 # The build target
-TARGET = test
+TARGET = game
 
 all: $(TARGET)
+
+debug: $(TARGET).cpp
+	$(CC) $(CFLAGS) -ggdb -o $(TARGET) $(TARGET).cpp
 
 $(TARGET): $(TARGET).cpp
 	$(CC) $(CFLAGS) -o $(TARGET) $(TARGET).cpp
