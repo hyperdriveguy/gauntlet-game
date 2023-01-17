@@ -26,6 +26,7 @@ enum class StatusEffect {
 	Dazed
 };
 
+// TODO: use an array or map instead due to all being the same type
 struct BaseStats {
 	int health;
 	int strength;
@@ -135,12 +136,18 @@ BaseStats distribute_stats() {
 			clear_output();
 			print_base_stats_table(base_stats);
 			std::cout << "You have " << points_to_distribute << " points to distribute." << std::endl;
+			// TODO: add error checking before prompting for adding points
+			// Prompts
 			string stat_choice = prompt("Which stat would you like to increase? (Health, Strength, sKill, sTamina, sPeed)", true);
 			int points_to_add = prompt_int("How many points would you like to add to this stat?");
+
+			// Error check based on number of points available
 			if(points_to_add > points_to_distribute) {
 				message_wait("You don't have that many points to distribute.");
 				continue;
 			}
+
+			// Distribute to respective stat
 			if(stat_choice == "health" || stat_choice == "h") {
 				base_stats.health += points_to_add;
 				points_to_distribute -= points_to_add;
@@ -156,6 +163,7 @@ BaseStats distribute_stats() {
 			} else if(stat_choice == "speed" || stat_choice == "p") {
 				base_stats.speed += points_to_add;
 				points_to_distribute -= points_to_add;
+			// Error checking for valid stat entry
 			} else {
 				message_wait("Not a valid stat, please try again.");
 			}
