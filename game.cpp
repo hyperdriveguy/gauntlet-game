@@ -7,12 +7,17 @@
 #include <string>
 #include <unordered_map>
 #include <limits>
-
-// Defines are for some game configuration
-#define CHARACTER_POINTS 20
+#include <cstdlib>
+#include <time.h>
 
 using std::string;
 
+// Defines are for some game configuration
+#define CHARACTER_POINTS 25
+
+
+// Define status effects
+// An enum is for ease of use in switch-case
 enum class StatusEffect {
 	Normal,
 	Poisoned,
@@ -23,36 +28,89 @@ enum class StatusEffect {
 	Asleep,
 	Dazed
 };
-
-// TODO: use an array or map instead due to all being the same type
-struct BaseStats {
-	int health;
-	int strength;
-	int skill;
-	int stamina;
-	int speed;
+// An array is used for ease of display
+const char* StatusEffectString[] = {
+	"Normal",
+	"Poisoned",
+	"Burned",
+	"Frozen",
+	"Paralyzed",
+	"Andrenaline",
+	"Asleep",
+	"Dazed"
 };
+
+
+// Constants and defines related to attacks
+
+/* Attacks are formatted like so:
+	Name of attack (string),
+	attacking stat (string),
+	attack accuracy (0-100 int),
+	status inflict (enum),
+	status inflict chance (0-100 int)*/
+struct Attack {
+    string name;
+    string attacking_stat;
+    int attack_accuracy;
+    StatusEffect status_inflict;
+    int status_inflict_chance;
+};
+// Not to be confused with "Attack" above
+enum class Attacks {
+	Slap,
+	SpicyCheese,
+	RibPoke,
+	BackInNam,
+};
+
+Attack ATTACK_LIST[] = {
+	{"Slap", "strength", 100, StatusEffect::Normal, 20},
+	{"Spicy Cheese", "skill", 65, StatusEffect::Burned, 50},
+	{"Rib Poke", "strength", 90, StatusEffect::Normal, 0},
+	{"Back In 'Nam", "stamina", 70, StatusEffect::Dazed, 65}
+};
+
+
+// Constants and defines related to enemies
+#define NUM_ENEMIES 3
+enum class Enemies {
+	SpicyDorito,
+	SkellyBoi,
+	BabyBoomer
+};
+
+const char* ENEMY_NAMES[] = {"Spicy Dorito", "Skelly Boi", "Baby Boomer"};
+
+// TODO: This uses a relatively high amount of RAM, make this more compact
+const std::unordered_map<string, int> ENEMY_BASE_STATS[] = {
+	{{"health", 2}, {"strength", 2}, {"skill", 6}, {"stamina", 10}, {"speed", 10}}, // Spicy Dorito
+	{{"health", 10}, {"strength", 2}, {"skill", 6}, {"stamina", 2}, {"speed", 10}}, // Skelly Boi
+	{{"health", 6}, {"strength", 6}, {"skill", 10}, {"stamina", 6}, {"speed", 2}}   // Baby Boomer
+};
+
 
 class Contestant {
 	public:
 		string name;
+		// One level scales all stats by 1.2x
 		int level;
 		std::unordered_map<string, int> base_stats;
 		StatusEffect status;
-		Contestant() : name("Contestant"), level(1), status(StatusEffect::Normal) {
-			base_stats = {{"health", 1}, {"strength", 1}, {"skill", 1}, {"stamina", 1}, {"speed", 1}};
-		}
-		Contestant(string* nam, int lev, std::unordered_map<string, int>* b_stats) :
+		Contestant(const string* nam, int lev, std::unordered_map<string, int>* b_stats) :
 			name(*nam), level(lev), base_stats(*b_stats),
 			status(StatusEffect::Normal) {}
+		Contestant() : name("Contestant"), level(1), status(StatusEffect::Normal), base_stats({{"health", 1}, {"strength", 1}, {"skill", 1}, {"stamina", 1}, {"speed", 1}}) {}
+		// TODO: Constructor that doesn't require passing in an unordered_map pointer
 	// TODO: Methods
 };
 
 class Player : public Contestant {
 	public:
+		int experience;
 		std::unordered_map<string, int> inventory;
 		Player(string *nam, int lev, std::unordered_map<string, int>* b_stats) :
-			Contestant(nam, lev, b_stats) {}
+			Contestant(nam, lev, b_stats), experience(0) {}
 };
 
 void clear_output() {
@@ -60,10 +118,11 @@ void clear_output() {
 }
 
 void message_wait(const string message) {
-    std::cout << message << std::endl;
-    std::cout << "Press any key to continue...";
+	std::cout << message << std::endl;
+	std::cout << "Press Enter to continue...";
 	std::cin.get();
-    std::cin.ignore();
+	std::cin.clear();
+	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
 
 string prompt(const string prompt_text, const bool same_line = false, const bool case_sensitive = false) {
@@ -181,14 +240,37 @@ std::unordered_map<string, int> distribute_stats() {
 }
 
 Player new_game() {
-	clear_output();
-	string player_name = prompt("What is your name?", true);
+	string confirm_name = "";
+	string player_name = "";
+	do {
+		clear_output();
+		player_name = prompt("What is your name?", true, true);
+		std::cout << "So, " << player_name << " is your name? [y/N]";
+		// Empty string is used for this prompt to avoid temporary variables
+		confirm_name = prompt("", true);
+	} while (confirm_name != "y");
 	std::unordered_map<string, int> player_stats = distribute_stats();
 	Player player(&player_name, 1, &player_stats);
+	std::cout << "Chosen health: " << player.base_stats["health"] << std::endl;
 	return player;
 }
 
+Contestant* generate_enemy(int level) {
+	int enemy_index = rand() % NUM_ENEMIES;
+	const string enemy_name = ENEMY_NAMES[enemy_index];
+	std::unordered_map<string, int> enemy_bst = ENEMY_BASE_STATS[enemy_index];
+	Contestant* enemy = new Contestant(&enemy_name, level, &enemy_bst);
+	return enemy;
+}
+
 int main() {
-	new_game();
+	// Initialize random seeed
+	srand(time(0));
+	// Initialize player via new game sequence
+	Player p = new_game();
+	std::cout << "Chosen speed: " << p.base_stats["speed"] << std::endl;
+	std::cout << "Your name: " << p.name << std::endl;
+	Contestant new_e = *generate_enemy(rand() % 100);
+	std::cout << "New enemy approaches: " << new_e.name << ", L:" << new_e.level << " HP:" << new_e.base_stats["health"] << std::endl;
 	return 0;
 }
