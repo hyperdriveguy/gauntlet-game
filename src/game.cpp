@@ -3,11 +3,9 @@
 
 #include <iostream>
 #include <string>
-#include <cstdlib>
-#include <time.h>
 
+#include "chance.h"
 #include "player.h"
-#include "new_game.h"
 
 using std::string;
 
@@ -20,13 +18,12 @@ Contestant* generate_enemy(int level) {
 }
 
 int main() {
-	// Initialize random seeed
-	srand(time(0));
+	Chance chance;
 	// Initialize player via new game sequence
 	Player* p = new_game();
-	std::cout << "Chosen speed: " << p->base_stats["speed"] << std::endl;
+	std::cout << "Chosen speed: " << p->getStat("speed") << std::endl;
 	std::cout << "Your name: " << p->name << std::endl;
-	Contestant new_e = *generate_enemy(rand() % 100);
-	std::cout << "New enemy approaches: " << new_e.name << ", L:" << new_e.level << " HP:" << new_e.base_stats["health"] << std::endl;
+	Contestant new_e = *generate_enemy(chance.range(0, 100));
+	std::cout << "New enemy approaches: " << new_e.name << ", L:" << new_e.level << " HP:" << new_e.getStat("health") << std::endl;
 	return 0;
 }

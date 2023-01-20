@@ -1,4 +1,5 @@
-#include "new_game.h"
+#include "player.h"
+
 
 void print_base_stats_table(std::unordered_map<string, int>& base_stats) {
 	std::cout << std::left << std::setw(15) << "Attribute"
@@ -25,7 +26,7 @@ void print_base_stats_table(std::unordered_map<string, int>& base_stats) {
 }
 
 
-std::unordered_map<string, int> distribute_stats() {
+std::unordered_map<string, int> distribute_stats(std::unordered_map<string, int> init_stats) {
 	std::unordered_map<string, int> base_stats;
 	// Define shortcut letters
 	std::unordered_map<string, string> option_map = {
@@ -38,7 +39,7 @@ std::unordered_map<string, int> distribute_stats() {
 	string confirm = "";
 	do {
 		int points_to_distribute = CHARACTER_POINTS;
-		base_stats = {{"health", 1}, {"strength", 1}, {"skill", 1}, {"stamina", 1}, {"speed", 1}};
+		base_stats = init_stats;
 		while (points_to_distribute > 0) {
 			clear_output();
 			print_base_stats_table(base_stats);
@@ -91,6 +92,6 @@ Player* new_game() {
 	} while (confirm_name != "y");
 	std::unordered_map<string, int> player_stats = distribute_stats();
 	Player* player = new Player(&player_name, 1, &player_stats);
-	std::cout << "Chosen health: " << player->base_stats["health"] << std::endl;
+	std::cout << "Chosen health: " << player->getStat("health") << std::endl;
 	return player;
 }
