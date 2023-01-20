@@ -1,10 +1,10 @@
-#include "include/prompts.h"
+#include "prompts.h"
 
 void clear_output() {
 	std::cout << "\033c";
 }
 
-void message_wait(const string message) {
+void message_wait(const string &message) {
 	std::cout << message << std::endl;
 	std::cout << "Press Enter to continue...";
 	std::cin.get();
@@ -12,7 +12,7 @@ void message_wait(const string message) {
 	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
 
-string prompt(const string prompt_text, const bool same_line, const bool case_sensitive) {
+string prompt(const string &prompt_text, const bool same_line, const bool case_sensitive) {
 	string answer;
 	std::cout << prompt_text;
 	if (!same_line)
@@ -25,7 +25,7 @@ string prompt(const string prompt_text, const bool same_line, const bool case_se
 	return answer;
 }
 
-int prompt_int(const string prompt_text, const bool same_line) {
+int prompt_int(const string &prompt_text, const bool same_line) {
 	int answer;
 
 	while (true) {
