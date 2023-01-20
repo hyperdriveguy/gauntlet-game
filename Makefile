@@ -1,21 +1,28 @@
-# the compiler: gcc for C program, define as g++ for C++
 CC = g++
 
-# compiler flags:
-#  -g     - this flag adds debugging information to the executable file
-#  -Wall  - this flag is used to turn on most compiler warnings
-CFLAGS  = -g -Wall
+CFLAGS = -Wall
+CFLAGS += -I./src/include
 
-# The build target
+DEBUG = -ggdb -g
+
 TARGET = game
+
+SRCS = src/*.cpp
 
 all: $(TARGET)
 
-debug: $(TARGET).cpp
-	$(CC) $(CFLAGS) -ggdb -o $(TARGET) $(TARGET).cpp
+debug: $(TARGET)
+	$(CC) $(CFLAGS) $(DEBUG) -o $(TARGET) $(SRCS)
 
-$(TARGET): $(TARGET).cpp
-	$(CC) $(CFLAGS) -o $(TARGET) $(TARGET).cpp
+$(TARGET): $(SRCS)
+	$(CC) $(CFLAGS) -o $(TARGET) $(SRCS)
 
 clean:
 	$(RM) $(TARGET)
+
+depend: .depend
+
+.depend: $(SRCS)
+	$(CC) $(CFLAGS) -MM $^ > $@
+
+include .depend

@@ -10,10 +10,13 @@
 #include <cstdlib>
 #include <time.h>
 
+#include "include/prompts.h"
+
 using std::string;
 
 // Defines are for some game configuration
 #define CHARACTER_POINTS 25
+#define MAX_NUM_ATTACKS 4
 
 
 // Define status effects
@@ -59,6 +62,7 @@ struct Attack {
 // Not to be confused with "Attack" above
 enum class Attacks {
 	Slap,
+	GetNeighNeighed,
 	SpicyCheese,
 	RibPoke,
 	BackInNam,
@@ -66,9 +70,10 @@ enum class Attacks {
 
 Attack ATTACK_LIST[] = {
 	{"Slap", "strength", 100, StatusEffect::Normal, 20},
+	{"Get Neigh Neighed", "speed", 85, StatusEffect::Burned, 50},
 	{"Spicy Cheese", "skill", 65, StatusEffect::Burned, 50},
 	{"Rib Poke", "strength", 90, StatusEffect::Normal, 0},
-	{"Back In 'Nam", "stamina", 70, StatusEffect::Dazed, 65}
+	{"Back In 'Nam", "stamina", 70, StatusEffect::Dazed, 90}
 };
 
 
@@ -89,6 +94,13 @@ const std::unordered_map<string, int> ENEMY_BASE_STATS[] = {
 	{{"health", 6}, {"strength", 6}, {"skill", 10}, {"stamina", 6}, {"speed", 2}}   // Baby Boomer
 };
 
+const Attacks ENEMY_ATTACKS[NUM_ENEMIES][MAX_NUM_ATTACKS] = {
+	{Attacks::SpicyCheese, Attacks::GetNeighNeighed},
+	{Attacks::Slap, Attacks::RibPoke},
+	{Attacks::Slap, Attacks::BackInNam}
+};
+
+
 
 class Contestant {
 	public:
@@ -97,12 +109,16 @@ class Contestant {
 		int level;
 		std::unordered_map<string, int> base_stats;
 		StatusEffect status;
+		Attacks* all_attacks;
 		Contestant(const string* nam, int lev, std::unordered_map<string, int>* b_stats) :
-			name(*nam), level(lev), base_stats(*b_stats),
-			status(StatusEffect::Normal) {}
+			name(*nam), level(lev), base_stats(*b_stats), status(StatusEffect::Normal) {}
+		Contestant(const string* nam, int lev, std::unordered_map<string, int>* b_stats, Attacks atks[MAX_NUM_ATTACKS]) :
+			name(*nam), level(lev), base_stats(*b_stats), all_attacks(atks), status(StatusEffect::Normal) {}
 		Contestant() : name("Contestant"), level(1), status(StatusEffect::Normal), base_stats({{"health", 1}, {"strength", 1}, {"skill", 1}, {"stamina", 1}, {"speed", 1}}) {}
 		// TODO: Constructor that doesn't require passing in an unordered_map pointer
 	// TODO: Methods
+	public:
+
 };
 
 class Player : public Contestant {
@@ -112,52 +128,6 @@ class Player : public Contestant {
 		Player(string *nam, int lev, std::unordered_map<string, int>* b_stats) :
 			Contestant(nam, lev, b_stats), experience(0) {}
 };
-
-void clear_output() {
-	std::cout << "\033c";
-}
-
-void message_wait(const string message) {
-	std::cout << message << std::endl;
-	std::cout << "Press Enter to continue...";
-	std::cin.get();
-	std::cin.clear();
-	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-}
-
-string prompt(const string prompt_text, const bool same_line = false, const bool case_sensitive = false) {
-	string answer;
-	std::cout << prompt_text;
-	if (!same_line)
-		std::cout << std::endl;
-	else
-		std::cout << ' ';
-	std::cin >> answer;
-	if (!case_sensitive)
-		transform(answer.begin(), answer.end(), answer.begin(), ::tolower);
-	return answer;
-}
-
-int prompt_int(const string prompt_text, const bool same_line = true) {
-	int answer;
-
-	while (true) {
-		std::cout << prompt_text;
-		if (!same_line)
-			std::cout << std::endl;
-		else
-			std::cout << ' ';
-
-		if (std::cin >> answer) {
-			return answer;
-		} else {
-			// This clears errors in the input stream and ignores all characters previously entered
-			std::cin.clear();
-			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-			std::cout << "Invalid value entered. Try again." << std::endl;
-		}
-	}
-}
 
 
 void print_base_stats_table(std::unordered_map<string, int>& base_stats) {
