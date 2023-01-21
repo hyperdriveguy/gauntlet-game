@@ -36,7 +36,7 @@ extern const char* StatusEffectString[];
 	attack accuracy (0-100 int),
 	status inflict (enum),
 	status inflict chance (0-100 int)*/
-struct Attack {
+struct attack_type {
 	string name;
 	string attacking_stat;
 	int attack_accuracy;
@@ -52,7 +52,7 @@ enum class Attacks {
 	BackInNam
 };
 
-const Attack ATTACK_LIST[] = {
+const attack_type ATTACK_LIST[] = {
 	{"Slap", "strength", 100, StatusEffect::Normal, 20},
 	{"Get Neigh Neighed", "speed", 85, StatusEffect::Burned, 50},
 	{"Spicy Cheese", "skill", 65, StatusEffect::Burned, 50},
