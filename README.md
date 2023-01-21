@@ -1,32 +1,31 @@
 # Overview
 
-{Important! Do not say in this section that this is college assignment. Talk about what you are trying to accomplish as a software engineer to further your learning.}
+This is my head-first dive into C++. I'm trying to use several features of the language that seem useful
+or will be applicable in development of C++ projects (i.e. Makefile).
 
-{Provide a description of the software that you wrote to demonstrate the C++ language.}
+This is a small game where you battle randomly generated enemies one after another.
+Think of it as a bullet-hell combined with an turn based combat game.
 
-{Describe your purpose for writing this software.}
+I wanted to take a concept I was somewhat familar with and implement it in a new programming language
+that I haven't really used the features of before.
 
-{Provide a link to your YouTube demonstration. It should be a 4-5 minute demo of the software running and a walkthrough of the code. Focus should be on sharing what you learned about the language syntax.}
-
-[Software Demo Video](http://youtube.link.goes.here)
+[comment]: <> (Provide a link to your YouTube demonstration. It should be a 4-5 minute demo of the software running and a walkthrough of the code. Focus should be on sharing what you learned about the language syntax.)
 
 # Development Environment
 
-{Describe the tools that you used to develop the software}
+This project was developed using Kate text editor with GDB extensions for debugging.
+The compiler intended to be used is `g++` with `make`.
 
-{Describe the programming language that you used and any libraries.}
+The language is C++ and tries to make use of exclusively the standard library as much as possible.
+The eventual goal is to make it so this project can be ported to a microcontroller.
 
 # Useful Websites
 
-{Make a list of websites that you found helpful in this project}
+Here are some sites I've found useful while developing this project:
 
-- [Web Site Name](http://url.link.goes.here)
-- [Web Site Name](http://url.link.goes.here)
+- [cplusplus.com](https://cplusplus.com/reference/)
+- [ChatGPT (Yes, really)](https://chat.openai.com)
 
 # Future Work
 
-{Make a list of things that you need to fix, improve, and add in the future.}
-
-- Item 1
-- Item 2
-- Item 3
+TODO: make todo items
