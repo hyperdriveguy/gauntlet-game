@@ -1,8 +1,11 @@
 #include "player.h"
 
-
 float Player::getStat(string stat) {
 	return base_stats[stat];
+}
+
+void Player::addAttack(const Attacks new_atk) {
+	attacks.push_back(new_atk);
 }
 
 void print_base_stats_table(std::unordered_map<string, int>& base_stats) {
@@ -30,7 +33,7 @@ void print_base_stats_table(std::unordered_map<string, int>& base_stats) {
 }
 
 
-std::unordered_map<string, int> distribute_stats(std::unordered_map<string, int> init_stats) {
+std::unordered_map<string, int> distribute_stats(const std::unordered_map<string, int> &init_stats) {
 	std::unordered_map<string, int> base_stats;
 	// Define shortcut letters
 	std::unordered_map<string, string> option_map = {
@@ -96,6 +99,5 @@ Player* new_game() {
 	} while (confirm_name != "y");
 	std::unordered_map<string, int> player_stats = distribute_stats();
 	Player* player = new Player(&player_name, 1, &player_stats);
-	std::cout << "Chosen health: " << player->getStat("health") << std::endl;
 	return player;
 }
