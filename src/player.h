@@ -34,6 +34,13 @@ class Player : public Contestant {
 		*/
 		Player(string *nam, int lev, std::unordered_map<string, int>* b_stats) :
 			Contestant(nam, lev, b_stats), experience(0) {}
+
+		/**
+		 * @param stat Key for accessing the base_stats unordered_map.
+		 * Note: base_stats *is* the stat for the player.
+		 * @return The stat corresponding to the key.
+		*/
+		float getStat(string stat) override;
 };
 
 

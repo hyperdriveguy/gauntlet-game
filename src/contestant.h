@@ -76,7 +76,7 @@ class Contestant {
 		 * @param stat Key for accessing the base_stats unordered_map.
 		 * @return The scaled stat corresponding to the key.
 		*/
-		float getStat(string stat);
+		virtual float getStat(string stat);
 };
 
 #endif // End guard

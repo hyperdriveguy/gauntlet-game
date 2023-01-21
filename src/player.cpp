@@ -1,6 +1,10 @@
 #include "player.h"
 
 
+float Player::getStat(string stat) {
+	return base_stats[stat];
+}
+
 void print_base_stats_table(std::unordered_map<string, int>& base_stats) {
 	std::cout << std::left << std::setw(15) << "Attribute"
 				<< std::setw(45) << "Description"
