@@ -48,7 +48,7 @@ int main() {
 	Player* p = new_game();
 	std::cout << "Chosen speed: " << p->getStat("speed") << std::endl;
 	std::cout << "Your name: " << p->name << std::endl;
-	Contestant* new_e = generate_enemy(chance.range(0, 100), chance.range(0, NUM_ENEMIES - 1));
+	Contestant* new_e = generate_enemy(chance.range(0, 100), chance.enemyIndex());
 	battle(p, new_e);
 	return 0;
 }

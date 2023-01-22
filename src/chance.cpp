@@ -26,3 +26,8 @@ double Chance::range(double min, double max) {
 	std::uniform_real_distribution<> distr(min, max);
 	return distr(engine);
 }
+
+int Chance::enemyIndex() {
+	std::uniform_int_distribution<> distr(0, NUM_ENEMIES - 1);
+	return distr(engine);
+}
