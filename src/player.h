@@ -57,7 +57,7 @@ class Player : public Contestant {
 		/**
 		 * @return Number of attacks.
 		 */
-		uint getNumberAttacks();
+		uint getNumberAttacks() override;
 
 		/**
 		 * @param new_atk New attack to add to the player's moveset

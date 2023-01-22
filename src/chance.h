@@ -16,7 +16,6 @@ class Chance {
 		bool percent(int threshold);
 		bool percent(uint threshold);
 		int range(int min, int max);
-		uint range(uint min, uint max);
 		double range(double min, double max);
 		bool coinFlip(double true_prob = 0.5);
 		int enemyIndex();

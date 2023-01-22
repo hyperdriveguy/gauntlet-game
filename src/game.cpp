@@ -40,6 +40,9 @@ void print_battle_screen(Player* player, Contestant* enemy) {
 
 
 bool battle(Player* player, Contestant* enemy, Chance* chan) {
+	clear_output();
+	string approaches = "A new challenger approaches: " + enemy->name + ", level " + std::to_string(enemy->level);
+	message_wait(approaches);
 	bool player_turn;
 	if (player->getStat("speed") > enemy->getStat("speed")) {
 		player_turn = true;
@@ -59,10 +62,23 @@ bool battle(Player* player, Contestant* enemy, Chance* chan) {
 					message_wait("Not a valid action number!");
 				}
 			} while (player_action > player->getNumberAttacks());
-			enemy->applyAttackDamage(player->getAttackDamage(player_action - 1));
+			int player_damage = player->getAttackDamage(player_action - 1);
+			enemy->applyAttackDamage(player_damage);
+			string player_damage_msg = player->name + " attacked with " + std::to_string(player_damage) + " power!";
+			clear_output();
+			message_wait(player_damage_msg);
 		} else {
-
+			int enemy_damage = enemy->getAttackDamage(chan->range(0, enemy->getNumberAttacks() - 1));
+			player->applyAttackDamage(enemy_damage);
+			string enemy_damage_msg = enemy->name + " attacked with " + std::to_string(enemy_damage) + " power!";
+			clear_output();
+			message_wait(enemy_damage_msg);
 		}
+		if (player->getCurrentHealth() <= 0)
+			return false;
+		else if (enemy->getCurrentHealth() <= 0)
+			return true;
+		player_turn = !player_turn;
 	}
 	return true;
 }
@@ -71,9 +87,16 @@ int main() {
 	Chance chance;
 	// Initialize player via new game sequence
 	Player* p = new_game();
-	std::cout << "Chosen speed: " << p->getStat("speed") << std::endl;
-	std::cout << "Your name: " << p->name << std::endl;
-	Contestant* new_e = generate_enemy(chance.range(0, 100), chance.enemyIndex());
-	battle(p, new_e, &chance);
+	while (true) {
+		Contestant* new_e = generate_enemy(chance.range(1, p->level + 3), chance.enemyIndex());
+		bool won_battle = battle(p, new_e, &chance);
+		clear_output();
+		if (won_battle) {
+			message_wait("You won the battle!");
+		} else {
+			message_wait("You lost the battle.");
+			break;
+		}
+	}
 	return 0;
 }

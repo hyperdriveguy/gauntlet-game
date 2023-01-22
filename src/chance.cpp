@@ -17,11 +17,6 @@ int Chance::range(int min, int max) {
 	return distr(engine);
 }
 
-uint Chance::range(uint min, uint max) {
-	std::uniform_int_distribution<> distr(min, max);
-	return distr(engine);
-}
-
 double Chance::range(double min, double max) {
 	std::uniform_real_distribution<> distr(min, max);
 	return distr(engine);

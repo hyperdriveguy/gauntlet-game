@@ -30,3 +30,7 @@ void Contestant::applyAttackDamage(int raw_damage) {
 	}
 	current_health -= final_damage;
 }
+
+uint Contestant::getNumberAttacks() {
+	return all_attacks->size();
+}

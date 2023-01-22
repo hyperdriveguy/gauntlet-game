@@ -101,6 +101,11 @@ class Contestant {
 		string getStatusEffect();
 
 		/**
+		 * @return Number of attacks.
+		 */
+		virtual uint getNumberAttacks();
+
+		/**
 		 * @param attack_index The index for an attack corresponding to all_attacks.
 		 * @return Raw attack damage to be applied to the enemy.
 		 */
