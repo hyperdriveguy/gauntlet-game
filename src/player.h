@@ -55,9 +55,20 @@ class Player : public Contestant {
 		string getAvailableAttacks();
 
 		/**
+		 * @return Number of attacks.
+		 */
+		uint getNumberAttacks();
+
+		/**
 		 * @param new_atk New attack to add to the player's moveset
 		 */
 		void addAttack(const Attacks new_atk);
+
+		/**
+		 * @param attack_index The index for an attack corresponding to all_attacks.
+		 * @return Raw attack damage to be applied to the enemy.
+		 */
+		int getAttackDamage(int attack_index) override;
 };
 
 

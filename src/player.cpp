@@ -17,6 +17,17 @@ string Player::getAvailableAttacks() {
 	return avail_attacks;
 }
 
+int Player::getAttackDamage(int attack_index) {
+	Attacks atk = attacks[attack_index];
+	string atk_stat = ATTACK_LIST[int(atk)].attacking_stat;
+	return getStat(atk_stat);
+}
+
+uint Player::getNumberAttacks() {
+	return attacks.size();
+}
+
+
 void print_base_stats_table(std::unordered_map<string, int>& base_stats) {
 	std::cout << std::left << std::setw(15) << "Attribute"
 				<< std::setw(45) << "Description"

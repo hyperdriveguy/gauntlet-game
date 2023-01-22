@@ -99,6 +99,18 @@ class Contestant {
 		 * @return Current StatusEffect as a string.
 		 */
 		string getStatusEffect();
+
+		/**
+		 * @param attack_index The index for an attack corresponding to all_attacks.
+		 * @return Raw attack damage to be applied to the enemy.
+		 */
+		virtual int getAttackDamage(int attack_index);
+
+		/**
+		 * @param raw_damage The damage to be applied to the contestant.
+		 */
+		void applyAttackDamage(int raw_damage);
 };
+
 
 #endif // End guard

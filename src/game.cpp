@@ -7,6 +7,7 @@
 #include "chance.h"
 #include "constants.h"
 #include "player.h"
+#include "prompts.h"
 
 using std::string;
 
@@ -48,9 +49,18 @@ bool battle(Player* player, Contestant* enemy, Chance* chan) {
 		player_turn = chan->coinFlip();
 	}
 	while (true) {
-		clear_output();
-		print_battle_screen(player, enemy);
 		if (player_turn) {
+			uint player_action = 0;
+			do {
+				clear_output();
+				print_battle_screen(player, enemy);
+				player_action = prompt_int("Enter number for action:");
+				if (player_action > player->getNumberAttacks()) {
+					message_wait("Not a valid action number!");
+				}
+			} while (player_action > player->getNumberAttacks());
+			enemy->applyAttackDamage(player->getAttackDamage(player_action - 1));
+		} else {
 
 		}
 	}
