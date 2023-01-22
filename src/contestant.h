@@ -28,9 +28,15 @@ class Contestant {
 	protected:
 		/**
 		* @var base_stats
-		* A map of the Contestant's base stats.
+		* A map of the Contestant's base stats such as health, strength, skill, stamina, and speed.
 		*/
 		std::unordered_map<string, int> base_stats;
+
+		/**
+		 * @var current_health
+		 * The current health of the Contestant, based on base stats.
+		 */
+		int current_health;
 
 		/**
 		* @var status
@@ -43,7 +49,7 @@ class Contestant {
 		 * @var all_attacks
 		 * A pointer to a standard vector of all the Contestant's attacks.
 		 */
-		std::vector<Attacks>* all_attacks;
+		const std::vector<Attacks>* all_attacks;
 
 	public:
 		/**
@@ -54,7 +60,7 @@ class Contestant {
 		* @return A new instance of Contestant.
 		*/
 		Contestant(const string* nam, int lev, std::unordered_map<string, int>* b_stats) :
-			name(*nam), level(lev), base_stats(*b_stats), status(StatusEffect::Normal), all_attacks() {}
+			name(*nam), level(lev), base_stats(*b_stats), current_health(getStat("health")), status(StatusEffect::Normal), all_attacks() {}
 
 		/**
 		* @brief Constructor
@@ -64,20 +70,35 @@ class Contestant {
 		* @param atks An array of the Contestant's attacks.
 		* @return A new instance of Contestant.
 		*/
-		Contestant(const string* nam, int lev, std::unordered_map<string, int>* b_stats, std::vector<Attacks>* atks) :
-			name(*nam), level(lev), base_stats(*b_stats), status(StatusEffect::Normal), all_attacks(atks) {}
+		Contestant(const string* nam, int lev, std::unordered_map<string, int>* b_stats, const std::vector<Attacks>* atks) :
+			name(*nam), level(lev), base_stats(*b_stats), current_health(getStat("health")), status(StatusEffect::Normal), all_attacks(atks) {}
 
 		/**
 		* @brief Default constructor
 		* @return A new instance of Contestant with default values for name, level, status, and base_stats.
 		*/
-		Contestant() : name("Contestant"), level(1), base_stats({{"health", 1}, {"strength", 1}, {"skill", 1}, {"stamina", 1}, {"speed", 1}}), status(StatusEffect::Normal), all_attacks() {}
+		Contestant() : name("Contestant"), level(1), base_stats({{"health", 1}, {"strength", 1}, {"skill", 1}, {"stamina", 1}, {"speed", 1}}), current_health(getStat("health")), status(StatusEffect::Normal), all_attacks() {}
 
 		/**
 		 * @param stat Key for accessing the base_stats unordered_map.
 		 * @return The scaled stat corresponding to the key.
-		*/
+		 */
 		virtual float getStat(string stat);
+
+		/**
+		 * @return Current health of the contestant.
+		 */
+		int getCurrentHealth();
+
+		/**
+		 * @return Whether StatusEffect::Normal is contained in status or not.
+		 */
+		bool isNormalStatus();
+
+		/**
+		 * @return Current StatusEffect as a string.
+		 */
+		string getStatusEffect();
 };
 
 #endif // End guard

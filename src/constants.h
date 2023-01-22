@@ -43,21 +43,23 @@ struct attack_type {
 	StatusEffect status_inflict;
 	int status_inflict_chance;
 };
-// Not to be confused with "Attack" above
+// Enum for an attack in the ATTACK_LIST
 enum class Attacks {
 	Slap,
 	GetNeighNeighed,
 	SpicyCheese,
 	RibPoke,
-	BackInNam
+	BackInNam,
+	GetRexxed
 };
-
+// Meant for use with the Attacks Enum
 const attack_type ATTACK_LIST[] = {
 	{"Slap", "strength", 100, StatusEffect::Normal, 20},
 	{"Get Neigh Neighed", "speed", 85, StatusEffect::Burned, 50},
 	{"Spicy Cheese", "skill", 65, StatusEffect::Burned, 50},
 	{"Rib Poke", "strength", 90, StatusEffect::Normal, 0},
-	{"Back In 'Nam", "stamina", 70, StatusEffect::Dazed, 90}
+	{"Back In 'Nam", "stamina", 70, StatusEffect::Dazed, 90},
+	{"Get Rexxed", "stamina", 65, StatusEffect::Frozen, 75}
 };
 
 

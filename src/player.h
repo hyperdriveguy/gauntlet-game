@@ -50,6 +50,11 @@ class Player : public Contestant {
 		float getStat(string stat) override;
 
 		/**
+		 * @return List of attacks formatted as a string.
+		 */
+		string getAvailableAttacks();
+
+		/**
 		 * @param new_atk New attack to add to the player's moveset
 		 */
 		void addAttack(const Attacks new_atk);

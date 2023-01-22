@@ -1,4 +1,5 @@
 #include "player.h"
+#include "constants.h"
 
 float Player::getStat(string stat) {
 	return base_stats[stat];
@@ -6,6 +7,14 @@ float Player::getStat(string stat) {
 
 void Player::addAttack(const Attacks new_atk) {
 	attacks.push_back(new_atk);
+}
+
+string Player::getAvailableAttacks() {
+	string avail_attacks = "";
+	for (auto atk : attacks) {
+		avail_attacks += ATTACK_LIST[int(atk)].name + ' ';
+	}
+	return avail_attacks;
 }
 
 void print_base_stats_table(std::unordered_map<string, int>& base_stats) {
@@ -99,5 +108,6 @@ Player* new_game() {
 	} while (confirm_name != "y");
 	std::unordered_map<string, int> player_stats = distribute_stats();
 	Player* player = new Player(&player_name, 1, &player_stats);
+	player->addAttack(Attacks::Slap);
 	return player;
 }

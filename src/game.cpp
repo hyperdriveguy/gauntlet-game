@@ -5,16 +5,41 @@
 #include <string>
 
 #include "chance.h"
+#include "constants.h"
 #include "player.h"
 
 using std::string;
 
-Contestant* generate_enemy(int level) {
-	int enemy_index = rand() % NUM_ENEMIES;
+Contestant* generate_enemy(int level, int enemy_index) {
 	const string enemy_name = ENEMY_NAMES[enemy_index];
 	std::unordered_map<string, int> enemy_bst = ENEMY_BASE_STATS[enemy_index];
-	Contestant* enemy = new Contestant(&enemy_name, level, &enemy_bst);
+	const std::vector<Attacks>* enemy_atks = &ENEMY_ATTACKS[enemy_index];
+	Contestant* enemy = new Contestant(&enemy_name, level, &enemy_bst, enemy_atks);
 	return enemy;
+}
+
+void print_battle_screen(Player* player, Contestant* enemy) {
+	// Enemy statistics
+	std::cout << enemy->name << " L:" << enemy->level << std::endl;
+	std::cout << "HP: " << enemy->getCurrentHealth() << std:: endl;
+	if (enemy->isNormalStatus())
+		std::cout << enemy->getStatusEffect() << std::endl;
+	std::cout << std::endl;
+	// Player statistics
+	std::cout << player->name << " L:" << player->level << std::endl;
+	std::cout << "HP: " << player->getCurrentHealth() << std::endl;
+	if (player->isNormalStatus())
+		std::cout << player->getStatusEffect() << std::endl;
+	std::cout << std::endl;
+	// Player moves
+	std::cout << "Available actions:" << std::endl;
+	std::cout << player->getAvailableAttacks() << std::endl;
+}
+
+bool battle(Player* player, Contestant* enemy) {
+	clear_output();
+	print_battle_screen(player, enemy);
+	return true;
 }
 
 int main() {
@@ -23,7 +48,7 @@ int main() {
 	Player* p = new_game();
 	std::cout << "Chosen speed: " << p->getStat("speed") << std::endl;
 	std::cout << "Your name: " << p->name << std::endl;
-	Contestant new_e = *generate_enemy(chance.range(0, 100));
-	std::cout << "New enemy approaches: " << new_e.name << ", L:" << new_e.level << " HP:" << new_e.getStat("health") << std::endl;
+	Contestant* new_e = generate_enemy(chance.range(0, 100), chance.range(0, NUM_ENEMIES - 1));
+	battle(p, new_e);
 	return 0;
 }
