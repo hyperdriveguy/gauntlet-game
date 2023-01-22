@@ -11,7 +11,7 @@ that I haven't really used the features of before.
 
 [Gameplay](https://youtu.be/rNHRTZYgudI)
 
-[Software Explanation](https://www.youtube.com/watch?v=u7pW38egm6E)
+[Software Explanation](https://youtu.be/u7pW38egm6E)
 
 # Development Environment
 
