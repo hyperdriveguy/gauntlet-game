@@ -36,9 +36,24 @@ void print_battle_screen(Player* player, Contestant* enemy) {
 	std::cout << player->getAvailableAttacks() << std::endl;
 }
 
-bool battle(Player* player, Contestant* enemy) {
-	clear_output();
-	print_battle_screen(player, enemy);
+
+
+bool battle(Player* player, Contestant* enemy, Chance* chan) {
+	bool player_turn;
+	if (player->getStat("speed") > enemy->getStat("speed")) {
+		player_turn = true;
+	} else if (player->getStat("speed") < enemy->getStat("speed")) {
+		player_turn = false;
+	} else {
+		player_turn = chan->coinFlip();
+	}
+	while (true) {
+		clear_output();
+		print_battle_screen(player, enemy);
+		if (player_turn) {
+
+		}
+	}
 	return true;
 }
 
@@ -49,6 +64,6 @@ int main() {
 	std::cout << "Chosen speed: " << p->getStat("speed") << std::endl;
 	std::cout << "Your name: " << p->name << std::endl;
 	Contestant* new_e = generate_enemy(chance.range(0, 100), chance.enemyIndex());
-	battle(p, new_e);
+	battle(p, new_e, &chance);
 	return 0;
 }

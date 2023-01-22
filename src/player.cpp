@@ -11,8 +11,8 @@ void Player::addAttack(const Attacks new_atk) {
 
 string Player::getAvailableAttacks() {
 	string avail_attacks = "";
-	for (auto atk : attacks) {
-		avail_attacks += ATTACK_LIST[int(atk)].name + ' ';
+	for (int atk_index; atk_index < attacks.size(); atk_index++) {
+		avail_attacks += std::to_string(atk_index + 1) + ") " + ATTACK_LIST[int(attacks[atk_index])].name + ' ';
 	}
 	return avail_attacks;
 }

@@ -27,6 +27,11 @@ double Chance::range(double min, double max) {
 	return distr(engine);
 }
 
+bool Chance::coinFlip(double true_prob) {
+	std::bernoulli_distribution distr(true_prob);
+	return distr(engine);
+}
+
 int Chance::enemyIndex() {
 	std::uniform_int_distribution<> distr(0, NUM_ENEMIES - 1);
 	return distr(engine);
