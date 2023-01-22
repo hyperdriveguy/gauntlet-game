@@ -9,7 +9,9 @@ Think of it as a bullet-hell combined with an turn based combat game.
 I wanted to take a concept I was somewhat familar with and implement it in a new programming language
 that I haven't really used the features of before.
 
-[comment]: <> (Provide a link to your YouTube demonstration. It should be a 4-5 minute demo of the software running and a walkthrough of the code. Focus should be on sharing what you learned about the language syntax.)
+[Gameplay](https://youtu.be/rNHRTZYgudI)
+
+[Software Explanation](https://www.youtube.com/watch?v=u7pW38egm6E)
 
 # Development Environment
 
@@ -28,4 +30,7 @@ Here are some sites I've found useful while developing this project:
 
 # Future Work
 
-TODO: make todo items
+- Implement experience gain
+- Don't use a map for base stats
+- Use ncurses instead of `cout` and `cin`
+- Modify data for a more balanced game
